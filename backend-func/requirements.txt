@@ -1,0 +1,12 @@
+azure-functions
+fastapi
+openai
+azure-search-documents
+azure-ai-formrecognizer
+pydantic
+python-multipart
+sse-starlette
+tenacity
+tiktoken
+python-docx
+aiohttp
