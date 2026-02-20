@@ -7,7 +7,7 @@ This repository contains a full Retrieval-Augmented Generation (RAG) app with:
 ## Architecture
 ```mermaid
 flowchart LR
-  UI[Streamlit Frontend] --> API[/api endpoints]
+  UI[Streamlit Frontend] --> API["/api endpoints"]
   API --> RAG[RAG Service]
   RAG --> EMB[Azure OpenAI Embeddings]
   RAG --> DI[Document Intelligence]
