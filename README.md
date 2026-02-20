@@ -43,6 +43,66 @@ tests/
   test_config.py    # legacy config test
 ```
 
+## System Flow
+
+### Document Upload Flow
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant UI as Streamlit Frontend
+  participant API as FastAPI
+  participant DI as Document Intelligence
+  participant EMB as Azure OpenAI Embeddings
+  participant SRCH as Azure AI Search
+
+  U->>UI: Upload file (PDF / TXT / DOCX)
+  UI->>API: POST /api/documents/upload
+  alt PDF file
+    API->>DI: Extract text (prebuilt-layout)
+    DI-->>API: Extracted text
+  else TXT or DOCX
+    API->>API: Extract text locally
+  end
+  API->>API: Chunk text (500-word segments)
+  API->>EMB: Generate embeddings (batch)
+  EMB-->>API: Embedding vectors
+  API->>SRCH: Upload chunk documents
+  SRCH-->>API: Indexing result
+  API-->>UI: Success + file/chunk counts
+  UI-->>U: Upload confirmed
+```
+
+### Chat Query Flow
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant UI as Streamlit Frontend
+  participant API as FastAPI
+  participant RAG as RAG Service
+  participant EMB as Azure OpenAI Embeddings
+  participant SRCH as Azure AI Search
+  participant CHAT as Azure OpenAI Chat
+
+  U->>UI: Type question + press Enter
+  UI->>API: POST /api/chat
+  API->>RAG: process_query()
+  RAG->>EMB: Embed query
+  EMB-->>RAG: Query vector
+  RAG->>SRCH: Hybrid search (keyword + vector)
+  SRCH-->>RAG: Top-k chunks + relevance scores
+  alt Score >= MINIMUM_RELEVANCE_SCORE
+    RAG->>CHAT: Strict RAG prompt + context chunks
+    CHAT-->>RAG: Answer text
+    RAG-->>API: Answer + sources
+    API-->>UI: Response (markdown answer + sources footer)
+    UI-->>U: Rendered answer with sources
+  else No relevant context
+    RAG-->>API: No-context response + suggested actions
+    API-->>UI: Suggested actions
+    UI-->>U: "Please upload relevant documents"
+  end
+```
+
 ## Key Features
 - Hybrid retrieval (keyword + vector) against Azure AI Search.
 - Optional semantic query mode in Azure Search.
