@@ -10,6 +10,7 @@ flowchart LR
   UI[Streamlit Frontend] --> API[/api endpoints]
   API --> RAG[RAG Service]
   RAG --> EMB[Azure OpenAI Embeddings]
+  RAG --> DI[Document Intelligence]
   RAG --> SRCH[Azure AI Search]
   RAG --> CHAT[Azure OpenAI Chat]
 ```
