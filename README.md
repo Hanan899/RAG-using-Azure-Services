@@ -10,6 +10,7 @@ flowchart LR
   UI[Streamlit Frontend] --> API["/api endpoints"]
   API --> RAG[RAG Service]
   RAG --> EMB[Azure OpenAI Embeddings]
+  RAG --> EMB[Document Intelligence]
   RAG --> SRCH[Azure AI Search]
   RAG --> CHAT[Azure OpenAI Chat]
 ```
@@ -224,5 +225,6 @@ Note:
 - The current backend configuration uses hardcoded credential values in `backend-func/app/config/credentials.py`.
 - Do not commit real secrets in source control.
 - Rotate any exposed keys and move to secure secret storage (for example environment variables, Azure Key Vault, or App Settings) before production use.
+
 
 
