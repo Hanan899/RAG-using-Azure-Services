@@ -9,7 +9,7 @@ flowchart LR
   UI[Streamlit UI] --> API[FastAPI /api/chat]
   API --> RAG[RAG Service]
   RAG --> SEARCH[Azure AI Search]
-  RAG --> OPENAI[Azure OpenAI (Chat)]
+  RAG --> OPENAI["Azure OpenAI (Chat)"]
 ```
 
 ## Setup Instructions
@@ -463,6 +463,7 @@ Response: "I can provide specifications for Model X, but I don't have informatio
   - `relevance_score`
   - `excerpt`
   - `metadata`
+
 
 ## Tests
 Run tests from the repository root:
